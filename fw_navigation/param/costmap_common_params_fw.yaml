@@ -13,7 +13,7 @@ subscribe_to_updates: true
 global_frame: map
 robot_base_frame: base_footprint
 always_send_full_costmap: true
-
+map_type: costmap
 # inflation_radius: 0.4 #default 0.45
 # cost_scaling_factor: 10.58 #default : 2.0
 
@@ -68,7 +68,7 @@ obstacle_3d_layer:
   observation_persistence: 0.0  #seconds
   max_obstacle_height:   1.0    #meters
   unknown_threshold:     15     #voxel height
-  mark_threshold:        1.8    #voxel height
+  mark_threshold:        2.7    #voxel height
   update_footprint_enabled: true
   combination_method:    1      #1=max, 0=override
   obstacle_range:        4.0    #meters
@@ -144,5 +144,5 @@ obstacle_2d_layer:
   scan_rp: {sensor_frame: base_scan, data_type: LaserScan, topic: scan_rp, marking: True, clearing: True, inf_is_valid: True}
 
 inflation_layer:
-  inflation_radius: 0.4
-  cost_scaling_factor: 3.58
+  inflation_radius: 1.25
+  cost_scaling_factor: 2.58

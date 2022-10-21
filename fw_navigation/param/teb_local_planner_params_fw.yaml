@@ -6,22 +6,22 @@ TebLocalPlannerROS:
  # Trajectory
   
  teb_autosize: True
- dt_ref: 0.4
+ dt_ref: 0.48
  dt_hysteresis: 0.11
  global_plan_overwrite_orientation: true # defualt : true
  max_global_plan_lookahead_dist: 2.0 #default 2.0
- feasibility_check_no_poses: 20
+ feasibility_check_no_poses: 10
  global_plan_viapoint_sep: -0.1
  publish_feedback: False 
  allow_init_with_backwards_motion: False
 
  # Robot
          
- max_vel_x: 0.65 # default 0.25
- max_vel_x_backwards: 0.15
- max_vel_theta: 0.3 # default 0.45
- acc_lim_x: 0.11 # default 0.5
- acc_lim_theta: 0.2 # default : 0.4
+ max_vel_x: 0.7 # default 0.25
+ max_vel_x_backwards: 0.2
+ max_vel_theta: 0.5 # default 0.45
+ acc_lim_x: 0.15 # default 0.5
+ acc_lim_theta: 0.25 # default : 0.4
  min_turning_radius: 0
  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
   type: "polygon" #"line"
@@ -37,26 +37,26 @@ TebLocalPlannerROS:
 
  # GoalTolerance
     
- xy_goal_tolerance: 0.45
- yaw_goal_tolerance: 0.45
+ xy_goal_tolerance: 0.55
+ yaw_goal_tolerance: 0.55
  trans_stopped_vel: 0.1
  theta_stopped_vel: 0.01
  free_goal_vel: False
  complete_global_plan: False     
  # Obstacles
     
- min_obstacle_dist: 0.1 # This value must also include our robot radius, since footprint_model is set to "point" or "line".
- inflation_dist: 0.7
+ min_obstacle_dist: 0.18 # This value must also include our robot radius, since footprint_model is set to "point" or "line".
+ inflation_dist: 0.4
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.0 #default : 1.0
- obstacle_poses_affected: 35
+ obstacle_poses_affected: 20
  costmap_converter_plugin: ""
  costmap_converter_spin_thread: True
  costmap_converter_rate: 5 # default : 5
 
  #Reduce_velocity_near_obstacles:
- obstacle_proximity_ratio_max_vel: 0.7
- obstacle_proximity_lower_bound: 0.5
+ obstacle_proximity_ratio_max_vel: 0.6
+ obstacle_proximity_lower_bound: 0.45
  obstacle_proximity_upper_bound: 0.2
  
  # Optimization
@@ -69,9 +69,9 @@ TebLocalPlannerROS:
  weight_max_vel_x: 2
  weight_max_vel_theta: 1
  weight_acc_lim_x: 15
- weight_acc_lim_theta: 1
+ weight_acc_lim_theta: 15
  weight_kinematics_nh: 1000
- weight_kinematics_forward_drive: 700
+ weight_kinematics_forward_drive: 800
  weight_kinematics_turning_radius: 1
  weight_optimaltime: 1
  weight_obstacle: 100
