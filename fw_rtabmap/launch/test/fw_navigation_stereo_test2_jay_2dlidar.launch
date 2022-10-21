@@ -178,7 +178,7 @@
 	    <param name="frame_id"                 type="string" value="base_footprint"/>
 	    <param name="rgbd_cameras"             type="int"    value="2"/>
 	    <param name="wait_for_transform"       type="bool"   value="$(arg wait_for_transform)"/>
-      <param name="Vis/RoiRatios"            type="string" value="0.03 0.03 0.04 0.04"/>
+      <param name="Vis/RoiRatios"            type="string" value="0.03 0.03 0.04 0.1"/>
 	    <param name="Odom/Strategy"            type="string" value="$(arg strategy)"/> 
 	    <param name="OdomF2M/BundleAdjustment" type="string" value="0"/> <!-- should be 0 for multi-cameras -->
 	    <param name="Vis/EstimationType"       type="string" value="0"/> <!-- should be 0 for multi-cameras -->
@@ -234,9 +234,9 @@
 
         
         <!-- Advances arguments -->     
-        <arg name="grid_maxgroundheight"                value="0.0"/>
+        <arg name="grid_maxgroundheight"                value="0.1"/>
         <arg name="grid_maxobstacleheight"              value="0.7"/>
-        <arg name="grid_rangemax"                       value="10"/> 
+        <arg name="grid_rangemax"                       value="15"/> 
         <arg name="mem_use_odometry_gravity"            value="true"/>
         <arg name="optimizer_gravity_sigma"             value="0.3"/>
         <arg name="grid_from_depth"                     value="false"/>
@@ -246,7 +246,7 @@
         <arg name="rgbd_angularupdate"                  value="0.01"/>    <!-- Update map only if the robot is moving -->
         <arg name="rgbd_linearupdate"                   value="0.01"/>    <!-- Update map only if the robot is moving -->
         <arg name="vis_maxdepth"                        value="6"/>
-        <arg name="vis_mininliers"                      value="20"/>
+        <arg name="vis_mininliers"                      value="15"/>
         <arg name="publish_null_when_lost"              value="false"/>
         <!-- <arg name="odom_fillinfodata"                   value="true"/> -->
         <arg if="$(arg multi_rgbd_)" name="vis_featuretype"                     value="6"/>

@@ -12,6 +12,8 @@
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     <!-- <param name="base_global_planner" value="global_planner/RRTGlobalPlanner"/> -->
     <!-- <param name="base_global_planner" value="navfn/NavfnROS"/> -->
+    <!-- <param name="base_global_planner" value="rrt_star_global_planner/RRTStarPlanner"/> -->
+    <!-- <param name="base_global_planner" value="lattice_planner/TBPlanner"/> -->
 
     <rosparam file="$(find fw_rev_04_navigation)/param/costmap_common_params_fw.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find fw_rev_04_navigation)/param/costmap_common_params_fw.yaml" command="load" ns="local_costmap" />
@@ -21,8 +23,9 @@
 
     <rosparam file="$(find fw_rev_04_navigation)/param/teb_local_planner_params_fw.yaml" command="load" />
     <rosparam file="$(find fw_rev_04_navigation)/param/global_planner_params.yaml" command="load" />
+    <!-- <rosparam file="$(find fw_rev_04_navigation)/param/global_planner_params_lattice.yaml" command="load" /> -->
+    <!-- <rosparam file="$(find fw_rev_04_navigation)/param/rrt_star_params.yaml" command="load" /> -->
     <!-- <rosparam file="$(find fw_rev_04_navigation)/param/rrt_global_planner.yaml" command="load" /> -->
-
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>
   </node>

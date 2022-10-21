@@ -19,10 +19,10 @@
       <arg name="unite_imu_method" value="linear_interpolation"/>
       <arg name="gyro_fps"      value="200"/>
       <arg name="accel_fps"     value="200"/>
-      <arg name="enable_gyro"   value="true"/>
-      <arg name="enable_accel"  value="true"/>
+      <arg name="enable_gyro"   value="false"/>
+      <arg name="enable_accel"  value="false"/>
       <arg name="publish_tf"    value="false"/>
-      <arg name="enable_infra"  value="true"/>
+      <arg name="enable_infra"  value="false"/>
       <!-- <arg name="enable_infra1" value="true"/>
       <arg name="enable_infra2" value="true"/> -->
       
@@ -30,7 +30,7 @@
       <!-- <arg name="filters" value="disparity,spatial,temporal,decimation"/> -->
     </include>
 
-    <include file="$(find realsense2_camera)/launch/d400.launch">
+    <!-- <include file="$(find realsense2_camera)/launch/d400.launch">
       <arg name="camera" value="d455_L"/>
       <arg name="serial_no_camera" value="213522254416"/>
       <arg name="initial_reset" value="$(arg initial_reset)"/>
@@ -44,18 +44,18 @@
       <arg name="enable_gyro"   value="true"/>
       <arg name="enable_accel"  value="true"/>
       <arg name="publish_tf"    value="false"/>
-      <arg name="enable_infra"  value="true"/>
-      <!-- <arg name="enable_infra1" value="true"/>
-      <arg name="enable_infra2" value="true"/> -->
+      <arg name="enable_infra"  value="false"/>
+      <arg name="enable_infra1" value="true"/>
+      <arg name="enable_infra2" value="true"/>
       
-      <!-- <arg name="filters" value="disparity,spatial,temporal,decimation"/> -->
-    </include>    
+      <arg name="filters" value="disparity,spatial,temporal,decimation"/>
+    </include>     -->
 
     <node pkg="imu_filter_madgwick" type="imu_filter_node" name="ImuFilter">
         <param name="use_mag" type="bool" value="false" />
         <param name="publish_tf" type="bool" value="false" />
         <param name="world_frame" type="string" value="enu" />
-        <remap from="/imu/data_raw" to="/d455_R/imu"/>
+        <remap from="/imu/data_raw" to="/d455_L/imu"/>
     </node>
 
         <!-- Odometry fusion (EKF), refer to demo launch file in robot_localization for more info -->

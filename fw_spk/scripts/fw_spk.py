@@ -91,7 +91,7 @@ def main_f():
       rospy.init_node('fw_spk_node', anonymous=True)
   
       rate = rospy.Rate(1) # ROS Rate at 5Hz
-      rospy.Subscriber("freeway/goal", PoseStamped, goal_sub)
+      rospy.Subscriber("move_base_simple/goal", PoseStamped, goal_sub)
     #   rospy.Subscriber("move_base/goal", MoveBaseActionGoal, mb_goal_sub)
       rospy.Subscriber("move_base/cancel", GoalID, cancel_sub)
       rospy.Subscriber("freeaway/diagnostics", stm_fw_msg, diagnostics_sub)

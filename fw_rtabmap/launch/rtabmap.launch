@@ -13,7 +13,7 @@
         images + corresponding camera_info msgs. You can use stereo_image_proc for image rectification.
         Example:
            $ roslaunch rtabmap_ros bumblebee.launch -->
-
+  <arg name="initial_reset"           default="false"/>
   
   <!-- Advances arguments -->
   <arg name="odom_topic"                          default="odom"/>          <!-- Odometry topic name -->
@@ -26,6 +26,7 @@
   <arg name="mem_use_odometry_gravity"            default=""/>
   <arg name="optimizer_gravity_sigma"             default=""/>
   <arg name="grid_from_depth"                     default=""/>
+  <arg name="grid_cellsize"                       default="0.08"/>
   <arg name="reg_force_3dof"                      default=""/>
   <arg name="reg_strategy"                        default="0"/>  
   <arg name="rtabmap_detectionrate"               default="2"/>
@@ -47,7 +48,9 @@
   <arg name="use_sim_time_"                       default="false"/>
   <arg name="voxel_clouds_"                       default="true"/>
   <arg name="multi_rgbd_"                         default="false"/>
+  <arg name="multi_rgbd_and_obstacle_detection_"  default="false"/>
   <arg name="vis_estimationtype"                  default=""/>
+  
 
   <!-- <arg name="proj_max_ground_angle"      default="45" /> -->
      
@@ -439,7 +442,7 @@
       <param name="Optimizer/GravitySigma" type="String"  value="$(arg optimizer_gravity_sigma)"/>
       <param name="Grid/FromDepth"         type="string"  value="$(arg grid_from_depth)"/>
       <param name="Grid/RangeMax"          type="string"  value="$(arg grid_rangemax)"/>
-      <param name="grid_size"              type="double"  value="100"/> <!-- 50 meters wide -->
+      <param name="grid_size"              type="double"  value="250"/> <!-- 50 meters wide -->
       <param name="RGBD/CreateOccupancyGrid"  value="true"/>      
       <!-- all points below 50 cm are ground -->
       <param name="Grid/MaxGroundHeight"      type="string" value="$(arg grid_maxgroundheight)"/>       
@@ -470,7 +473,7 @@
       <param name="Kp/DetectorStrategy"       type="string" value="$(arg kp_detectorstrategy)"/>  <!--use same features as odom-->
       <param name="Kp/MaxDepth"               type="string" value="$(arg kp_maxdepth)"/>
       <param name="Grid/DepthDecimation"      type="string" value="4"/>
-      <param name="Grid/CellSize"             type="string" value="0.03"/>
+      <param name="Grid/CellSize"             type="string" value="$(arg grid_cellsize)"/>
 
       <param name="Optimizer/Strategy"        type="string" value="2"/>
       <param name="Marker/VarianceAngular"    type="string" value="100000"/>
@@ -550,6 +553,7 @@
 
   <group if="$(arg multi_rgbd_)">
     <node pkg="nodelet" type="nodelet" name="nodelet_manager1" args="manager"/>
+    
     <node pkg="nodelet" type="nodelet" name="points_xyzrgb1" args="standalone rtabmap_ros/point_cloud_xyzrgb" clear_params="$(arg clear_params)" output="$(arg output)">
     <remap if="$(arg stereo)" from="left/image"        to="$(arg left_image_topic_relay)"/>
     <remap if="$(arg stereo)" from="right/image"       to="$(arg right_image_topic_relay)"/>
@@ -562,8 +566,8 @@
     <remap from="cloud"             to="/voxel_cloud_r" />
 
     <param name="decimation"  type="double" value="4"/>
-    <param name="max_depth"   type="double" value="6"/>
-    <param name="roi_ratios"  type="string" value="0.3 0 0 0.2"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+    <param name="max_depth"   type="double" value="4"/>
+    <param name="roi_ratios"  type="string" value="0.0 0.0 0 0.04"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
     <param name="voxel_size"  type="double" value="0.05"/>
     <param name="approx_sync" type="bool"   value="false"/>
   </node>
@@ -572,16 +576,20 @@
     <node pkg="nodelet" type="nodelet" name="points_xyzrgb2" args="standalone rtabmap_ros/point_cloud_xyzrgb" clear_params="$(arg clear_params)" output="$(arg output)">
      <remap from="rgbd_image"        to="/camera_l/rgbd_image"/>
      <remap from="cloud"             to="/voxel_cloud_l" />
+
+     <remap unless="$(arg subscribe_rgbd)" from="rgb/image"         to="$(arg rgb_topic_relay)"/>
+     <remap unless="$(arg subscribe_rgbd)" from="depth/image"       to="$(arg depth_topic_relay)"/>
+     <remap unless="$(arg subscribe_rgbd)" from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
  
      <param name="decimation"  type="double" value="4"/>
-     <param name="max_depth"   type="double" value="6"/>
-     <param name="roi_ratios"  type="string" value="0.3 0 0 0.2"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+     <param name="max_depth"   type="double" value="4"/>
+     <param name="roi_ratios"  type="string" value="0.0 0.0 0.0 0.04"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
      <param name="voxel_size"  type="double" value="0.05"/>
      <param name="approx_sync" type="bool"   value="false"/>
     </node>
 
     <!-- <node pkg="nodelet" type="nodelet" name="nodelet_manager5" args="manager"/> -->
-    <node pkg="nodelet" type="nodelet" name="obstacles_detection1" args="standalone rtabmap_ros/obstacles_detection">
+    <node if="$(arg multi_rgbd_and_obstacle_detection_)" pkg="nodelet" type="nodelet" name="obstacles_detection1" args="standalone rtabmap_ros/obstacles_detection">
      <remap from="cloud" to="/voxel_cloud_r"/>
      <remap from="obstacles" to="/obstacle_cloud_r"/>
      <remap from="ground"    to="/ground_r"/>
@@ -594,7 +602,7 @@
     </node>
 
     <!-- <node pkg="nodelet" type="nodelet" name="nodelet_manager6" args="manager"/> -->
-    <node pkg="nodelet" type="nodelet" name="obstacles_detection2" args="standalone rtabmap_ros/obstacles_detection">
+    <node if="$(arg multi_rgbd_and_obstacle_detection_)" pkg="nodelet" type="nodelet" name="obstacles_detection2" args="standalone rtabmap_ros/obstacles_detection">
      <remap from="cloud" to="/voxel_cloud_l"/>
      <remap from="obstacles" to="/obstacle_cloud_l"/>
      <remap from="ground"    to="/ground_l"/>
@@ -636,5 +644,28 @@
      <!-- <param name="min_cluster_size" type="int" value="20"/> -->
      <param name="max_obstacles_height" type="double" value="2.0"/>
   </node>
+
+
+
+    <include file="$(find realsense2_camera)/launch/d400.launch">
+      <arg name="camera" value="d455_L"/>
+      <arg name="serial_no_camera" value="213522254416"/>
+      <arg name="initial_reset" value="$(arg initial_reset)"/>
+      <arg name="align_depth" value="true"/>
+      <arg name="enable_sync" value="true"/>
+      <arg name="clip_distance" value="8"/>
+      <arg name="linear_accel_cov" value="1.0"/>
+      <arg name="unite_imu_method" value="linear_interpolation"/>
+      <arg name="gyro_fps"      value="200"/>
+      <arg name="accel_fps"     value="200"/>
+      <arg name="enable_gyro"   value="true"/>
+      <arg name="enable_accel"  value="true"/>
+      <arg name="publish_tf"    value="false"/>
+      <arg name="enable_infra"  value="false"/>
+      <!-- <arg name="enable_infra1" value="true"/>
+      <arg name="enable_infra2" value="true"/> -->
+      
+      <!-- <arg name="filters" value="disparity,spatial,temporal,decimation"/> -->
+    </include>    
 
 </launch>

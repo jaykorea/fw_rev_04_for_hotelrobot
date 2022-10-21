@@ -47,13 +47,13 @@ class Distance_TimeCalculator
 
     Distance_TimeCalculator(ros::NodeHandle *n)
     {
-      resume_pub = n->advertise<geometry_msgs::PoseStamped>("freeway/goal", 100);
+      resume_pub = n->advertise<geometry_msgs::PoseStamped>("move_base_simple/goal", 100);
       feedback_sub = n->subscribe("move_base/feedback", 1000, &Distance_TimeCalculator::get_feedback_cb, this);
       status_sub = n->subscribe("move_base/status", 10, &Distance_TimeCalculator::get_status_cb, this);
       velocity_sub = n->subscribe("cmd_vel", 10, &Distance_TimeCalculator::get_velocity_cb, this);
       getpath_sub = n->subscribe("move_base/GlobalPlanner/plan", 10, &Distance_TimeCalculator::get_globalpath_cb, this);
       resume_sub = n->subscribe("freeway/resume",10, &Distance_TimeCalculator::resume_cb, this);
-      goal_sub = n->subscribe("freeway/goal", 10, &Distance_TimeCalculator::goal_cb, this);
+      goal_sub = n->subscribe("move_base_simple/goal", 10, &Distance_TimeCalculator::goal_cb, this);
     }
 
 void resume_cb(const std_msgs::Empty &resume_msg) {

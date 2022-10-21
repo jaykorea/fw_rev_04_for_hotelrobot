@@ -47,6 +47,17 @@
     </node>
    </group>
 
+
+
+<!-- <node pkg = "rtabmap_ros" type="rtabmap" name="rtabmap" args="-d">
+  <param name="ground_truth_frame_id" value=""/>
+  <param name="ground_truth_base_frame_id" value=""/>
+</node> -->
+
+
+
+
+
 <group ns="visual_odometry" >
     <node if="$(arg stereo_)" pkg="rtabmap_ros" type="stereo_odometry" name="stereo_odometry" output="screen">
         <remap from="left/image_rect"             to="/d455/infra1/image_rect_raw"/>
@@ -167,7 +178,7 @@
 	    <param name="frame_id"                 type="string" value="base_footprint"/>
 	    <param name="rgbd_cameras"             type="int"    value="2"/>
 	    <param name="wait_for_transform"       type="bool"   value="$(arg wait_for_transform)"/>
-      <param name="Vis/RoiRatios"            type="string" value="0.03 0.03 0.04 0.04"/>
+      <param name="Vis/RoiRatios"            type="string" value="0.03 0.03 0.04 0.1"/>
 	    <param name="Odom/Strategy"            type="string" value="$(arg strategy)"/> 
 	    <param name="OdomF2M/BundleAdjustment" type="string" value="0"/> <!-- should be 0 for multi-cameras -->
 	    <param name="Vis/EstimationType"       type="string" value="0"/> <!-- should be 0 for multi-cameras -->
@@ -223,9 +234,10 @@
 
         
         <!-- Advances arguments -->     
-        <arg name="grid_maxgroundheight"                value="0.0"/>
+        <arg name="grid_maxgroundheight"                value="0.1"/>
         <arg name="grid_maxobstacleheight"              value="0.7"/>
-        <arg name="grid_rangemax"                       value="10"/> 
+        <arg name="grid_rangemax"                       value="15"/>
+        <arg name="grid_cellsize"                       value="0.05"/>
         <arg name="mem_use_odometry_gravity"            value="true"/>
         <arg name="optimizer_gravity_sigma"             value="0.3"/>
         <arg name="grid_from_depth"                     value="false"/>

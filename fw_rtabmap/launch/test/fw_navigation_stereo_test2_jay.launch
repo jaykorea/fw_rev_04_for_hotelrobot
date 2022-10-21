@@ -125,8 +125,8 @@
       <param name="Optimizer/GravitySigma" type="String"  value="$(arg optimizer_gravity_sigma)"/>
       <param name="Grid/FromDepth"         type="string"  value="$(arg grid_from_depth)"/>
       <param name="Grid/RangeMax"          type="string"  value="$(arg grid_rangemax)"/>
-      <param name="grid_size"              type="double"  value="50"/> <!-- 50 meters wide -->
-      <param name="RGBD/CreateOccupancyGrid"  value="true"/>      
+      <param name="grid_size"              type="double"  value="1000"/> <!-- 50 meters wide -->
+      <param name="RGBD/CreateOccupancyGrid"  type="string"  value="true"/>      
       <!-- all points below 50 cm are ground -->
       <param name="Grid/MaxGroundHeight"      type="string" value="$(arg grid_maxgroundheight)"/>       
       <!-- all points above 20 cm and below 2 m are obstacles -->
@@ -135,7 +135,7 @@
       <!-- <param name="Grid/NormalsSegmentation" type="string" value="false"/> -->
       <!-- <param name="RGBD/OptimizeFromGraphEnd" value="true"/> -->
       <param name="Reg/Force3DoF"                type="string" value="$(arg reg_force_3dof)"/>
-      <!-- <param name="Reg/Strategy"                 type="string" value="$(arg reg_strategy)"/>   -->
+      <param name="Reg/Strategy"                 type="string" value="$(arg reg_strategy)"/>  
       <param name="Rtabmap/DetectionRate"        type="string" value="$(arg rtabmap_detectionrate)"/>
       <param name="RGBD/AngularUpdate"           type="string" value="$(arg rgbd_angularupdate)"/>    <!-- Update map only if the robot is moving -->
       <param name="RGBD/LinearUpdate"            type="string" value="$(arg rgbd_linearupdate)"/>    <!-- Update map only if the robot is moving -->
@@ -156,7 +156,7 @@
       <param name="Kp/DetectorStrategy"       type="string" value="$(arg kp_detectorstrategy)"/>  <!--use same features as odom-->
       <param name="Kp/MaxDepth"               type="string" value="$(arg kp_maxdepth)"/>
       <param name="Grid/DepthDecimation"      type="string" value="4"/>
-      <param name="Grid/CellSize"             type="string" value="0.03"/>
+      <param name="Grid/CellSize"             type="string" value="0.05"/>
 
       <!-- <param name="Optimizer/Strategy"        type="string" value="2"/> -->
       <param name="Marker/VarianceAngular"    type="string" value="100000"/>

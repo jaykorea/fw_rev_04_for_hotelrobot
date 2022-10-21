@@ -4,6 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
         - /TF1/Frames1
         - /TF1/Tree1
         - /LaserScan1
@@ -12,9 +13,7 @@ Panels:
         - /Local Map1
         - /Local Map1/Costmap1
         - /MapCloud1
-        - /PointCloud22
         - /PointCloud22/Autocompute Value Bounds1
-        - /PointCloud23
       Splitter Ratio: 0.6181818246841431
     Tree Height: 963
   - Class: rviz/Selection
@@ -567,8 +566,7 @@ Visualization Manager:
       Marker Topic: /move_base/TebLocalPlannerROS/teb_markers
       Name: Marker
       Namespaces:
-        PointObstacles: true
-        RobotFootprintModel: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -577,7 +575,7 @@ Visualization Manager:
       Axes Radius: 0.009999999776482582
       Class: rviz/PoseArray
       Color: 255; 0; 0
-      Enabled: true
+      Enabled: false
       Head Length: 0.07000000029802322
       Head Radius: 0.029999999329447746
       Name: PoseArray
@@ -586,7 +584,7 @@ Visualization Manager:
       Shape: Arrow (Flat)
       Topic: /move_base/TebLocalPlannerROS/teb_poses
       Unreliable: false
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -755,25 +753,9 @@ Visualization Manager:
       Topic: /move_base/GlobalPlanner/plan
       Unreliable: false
       Value: true
-    - Alpha: 1
-      Arrow Length: 0.30000001192092896
-      Axes Length: 0.25
-      Axes Radius: 0.009999999776482582
-      Class: rviz/PoseArray
-      Color: 239; 41; 41
-      Enabled: true
-      Head Length: 0.07000000029802322
-      Head Radius: 0.029999999329447746
-      Name: PoseArray
-      Shaft Length: 0.23000000417232513
-      Shaft Radius: 0.009999999776482582
-      Shape: Axes
-      Topic: /rtabmap/landmarks
-      Unreliable: false
-      Value: true
   Enabled: true
   Global Options:
-    Background Color: 186; 189; 182
+    Background Color: 255; 255; 255
     Default Light: true
     Fixed Frame: map
     Frame Rate: 30
@@ -789,31 +771,26 @@ Visualization Manager:
       X std deviation: 0.5
       Y std deviation: 0.5
     - Class: rviz/SetGoal
-      Topic: freeway/goal
+      Topic: move_base_simple/goal
     - Class: rviz/Measure
   Value: true
   Views:
     Current:
-      Class: rviz/XYOrbit
-      Distance: 11.191183090209961
+      Angle: 0.30499976873397827
+      Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
-      Focal Point:
-        X: -1.5633606910705566
-        Y: 0.36554306745529175
-        Z: 1.5497207641601562e-6
-      Focal Shape Fixed Size: true
-      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.039797067642212
+      Scale: 47.345359802246094
       Target Frame: <Fixed Frame>
-      Value: XYOrbit (rviz)
-      Yaw: 5.786746025085449
+      Value: TopDownOrtho (rviz)
+      X: -5.534149646759033
+      Y: 2.4242372512817383
     Saved: ~
 Window Geometry:
   Displays:
@@ -833,5 +810,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1637
-  X: 148
-  Y: 70
+  X: 923
+  Y: 79
