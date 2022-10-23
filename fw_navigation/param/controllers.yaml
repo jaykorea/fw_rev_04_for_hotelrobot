@@ -1,3 +1,6 @@
+controllers:
+   - name: 'TebLocalPlannerROS'
+     type: 'teb_local_planner/TebLocalPlannerROS'
 TebLocalPlannerROS:
 
  odom_topic: odometry/filtered
@@ -19,9 +22,9 @@ TebLocalPlannerROS:
          
  max_vel_x: 0.7 # default 0.25
  max_vel_x_backwards: 0.2
- max_vel_theta: 0.45 # default 0.45
+ max_vel_theta: 0.5 # default 0.45
  acc_lim_x: 0.15 # default 0.5
- acc_lim_theta: 0.3 # default : 0.4
+ acc_lim_theta: 0.25 # default : 0.4
  min_turning_radius: 0
  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
   type: "polygon" #"line"
@@ -37,8 +40,8 @@ TebLocalPlannerROS:
 
  # GoalTolerance
     
- xy_goal_tolerance: 0.65
- yaw_goal_tolerance: 0.65
+ xy_goal_tolerance: 0.55
+ yaw_goal_tolerance: 0.55
  trans_stopped_vel: 0.1
  theta_stopped_vel: 0.01
  free_goal_vel: False
@@ -46,7 +49,7 @@ TebLocalPlannerROS:
  # Obstacles
     
  min_obstacle_dist: 0.12 # This value must also include our robot radius, since footprint_model is set to "point" or "line".
- inflation_dist: 1.0
+ inflation_dist: 0.4
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.0 #default : 1.0
  obstacle_poses_affected: 20
@@ -55,7 +58,7 @@ TebLocalPlannerROS:
  costmap_converter_rate: 5 # default : 5
 
  #Reduce_velocity_near_obstacles:
- obstacle_proximity_ratio_max_vel: 0.65
+ obstacle_proximity_ratio_max_vel: 0.6
  obstacle_proximity_lower_bound: 0.45
  obstacle_proximity_upper_bound: 0.2
  

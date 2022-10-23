@@ -52,7 +52,7 @@ def distancetimecalculator_sub(data):
         if rospy.Time.now().to_sec() - ct >= auto_driving_timer_time and dt_f == True:
             playsound(pkg_path+'/scripts/source/auto_driving.mp3')
             ct = rospy.Time.now().to_sec()
-        if data.arrival_time <= 7.0 and dt_count < 1 and goal_sub_flag != False:
+        elif data.arrival_time <= 7.0 and dt_count < 1 and goal_sub_flag != False:
             playsound(pkg_path+'/scripts/source/goal_close.mp3')
             dt_count = dt_count+1
             dt_f = False

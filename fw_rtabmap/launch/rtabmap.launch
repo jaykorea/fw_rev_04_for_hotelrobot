@@ -566,8 +566,8 @@
     <remap from="cloud"             to="/voxel_cloud_r" />
 
     <param name="decimation"  type="double" value="4"/>
-    <param name="max_depth"   type="double" value="4"/>
-    <param name="roi_ratios"  type="string" value="0.0 0.0 0 0.04"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+    <param name="max_depth"   type="double" value="6"/>
+    <param name="roi_ratios"  type="string" value="0.0 0.0 0 0.02"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
     <param name="voxel_size"  type="double" value="0.05"/>
     <param name="approx_sync" type="bool"   value="false"/>
   </node>
@@ -582,8 +582,8 @@
      <remap unless="$(arg subscribe_rgbd)" from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
  
      <param name="decimation"  type="double" value="4"/>
-     <param name="max_depth"   type="double" value="4"/>
-     <param name="roi_ratios"  type="string" value="0.0 0.0 0.0 0.04"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+     <param name="max_depth"   type="double" value="6"/>
+     <param name="roi_ratios"  type="string" value="0.0 0.0 0.0 0.02"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
      <param name="voxel_size"  type="double" value="0.05"/>
      <param name="approx_sync" type="bool"   value="false"/>
     </node>
