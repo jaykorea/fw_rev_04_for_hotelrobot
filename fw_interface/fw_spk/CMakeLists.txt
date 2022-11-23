@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   move_base_msgs
+  mbf_msgs
   nav_msgs
   rospy
   std_msgs

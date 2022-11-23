@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   move_base_msgs
+  mbf_msgs
   nav_msgs
   roscpp
   std_msgs
@@ -129,6 +130,9 @@ include_directories(
 
 add_executable(distancetime_calculator_node src/distance_calculator_oop.cpp)
 target_link_libraries(distancetime_calculator_node ${catkin_LIBRARIES})
+
+add_executable(distancetime_calculator_flex_node src/distance_calculator_oop_flex.cpp)
+target_link_libraries(distancetime_calculator_flex_node ${catkin_LIBRARIES})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

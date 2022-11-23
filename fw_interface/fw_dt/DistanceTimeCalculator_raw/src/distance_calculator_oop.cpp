@@ -27,40 +27,56 @@
 class Distance_TimeCalculator
 {
   public:
-  
-    float total_vel = 0.0;
-    int status_flag=0;
-    int first_time=1; 
-    uint8_t status_info_=0;
-    geometry_msgs::Pose current_robot_pose;
-    geometry_msgs::Pose prev_current_robot_pose;
-    geometry_msgs::PoseStamped final_goal;
-    double move_base_GlobalPlanner_plan_Time=0.0;
-    float first_global_path_distance=0.0;
-    float global_path_percentage=0.0;
-    float remaining_time=0.0;
-    double msg_global_path_distance=0.0;
-    double traveled_distance=0.0;
-    float average_total_vel=0.0;
-    double remaining_percentage=0.0;
-    bool global_path_flag = false;
-
     Distance_TimeCalculator(ros::NodeHandle *n)
     {
       resume_pub = n->advertise<geometry_msgs::PoseStamped>("move_base_simple/goal", 100);
+      cancel_pub = n->advertise<actionlib_msgs::GoalID>("/move_base/cancel", 10);
+      cmd_pub = n->advertise<geometry_msgs::Twist>("cmd_vel", 10);
+      cancel_sub = n->subscribe("freeway/goal_cancel", 100, &Distance_TimeCalculator::cancel_cb, this);
       feedback_sub = n->subscribe("move_base/feedback", 1000, &Distance_TimeCalculator::get_feedback_cb, this);
       status_sub = n->subscribe("move_base/status", 10, &Distance_TimeCalculator::get_status_cb, this);
       velocity_sub = n->subscribe("cmd_vel", 10, &Distance_TimeCalculator::get_velocity_cb, this);
-      getpath_sub = n->subscribe("move_base/GlobalPlanner/plan", 10, &Distance_TimeCalculator::get_globalpath_cb, this);
+      getpath_sub = n->subscribe("move_base/TebLocalPlannerROS/global_plan", 10, &Distance_TimeCalculator::get_globalpath_cb, this);
       resume_sub = n->subscribe("freeway/resume",10, &Distance_TimeCalculator::resume_cb, this);
       goal_sub = n->subscribe("move_base_simple/goal", 10, &Distance_TimeCalculator::goal_cb, this);
+
+      total_vel = 0.0;
+      status_flag=0;
+      first_time=1; 
+      status_info_=0;
+      current_robot_pose;
+      prev_current_robot_pose;
+      final_goal;
+      move_base_GlobalPlanner_plan_Time=0.0;
+      first_global_path_distance=0.0;
+      global_path_percentage=0.0;
+      remaining_time=0.0;
+      msg_global_path_distance=0.0;
+      traveled_distance=0.0;
+      average_total_vel=0.0;
+      remaining_percentage=0.0;
+      global_path_flag = false;
     }
+
+
+void cancel_cb(const std_msgs::Empty &cancel_msg) {
+  geometry_msgs::Twist cmd_vel_msg;
+  actionlib_msgs::GoalID empty_goal;
+  cmd_vel_msg.linear.x = 0.0;
+  cmd_vel_msg.angular.z = 0.0;
+
+  cmd_pub.publish(cmd_vel_msg);
+  cancel_pub.publish(empty_goal);
+}
 
 void resume_cb(const std_msgs::Empty &resume_msg) {
   ros::Duration tenth(0, 100000000); // 0.1 seconds
   for (int i=0; i<1; i++) {
-  resume_pub.publish(final_goal);
-  tenth.sleep();
+    ROS_INFO("status_info_: %d", status_info_);
+    if(!(status_info_ == 4 || status_info_ == 3)){
+      resume_pub.publish(final_goal);
+    }
+    tenth.sleep();
   }
 }
 
@@ -78,7 +94,7 @@ void get_status_cb(const actionlib_msgs::GoalStatusArray &status_msg) {
     }
       status_info_ = status_msg.status_list[is].status;
   }
-  else ROS_INFO("status_list array is empty");
+  //else ROS_INFO("status_list array is empty");
   //ROS_INFO("status flag: %u", status_flag);
 }
 
@@ -161,14 +177,67 @@ void get_feedback_cb(const move_base_msgs::MoveBaseActionFeedback &feedback_msgs
   remaining_percentage = traveled_distance/(msg_global_path_distance+traveled_distance)*100;
   }
 }
+
+void check_update_time(double current_time)
+{
+  if ((current_time - move_base_GlobalPlanner_plan_Time) < 2.0) { status_flag=1; }
+  else { status_flag=0; remaining_time = 0.0; msg_global_path_distance=0.0; first_global_path_distance=0.0; traveled_distance=0.0; first_time=0; remaining_percentage=0.0; global_path_flag=false;}
+ 
+}
+
+double r_msg_global_path_distance()
+{
+  return msg_global_path_distance;
+}
+
+double r_remaining_time()
+{
+  return remaining_time;
+}
+
+double r_traveled_distance()
+{
+  return traveled_distance;
+}
+
+double r_remaining_percentage()
+{
+  return remaining_percentage;
+}
+
+double r_status_info_()
+{
+  return status_info_;
+}
+
   private:
     ros::Publisher resume_pub;
+    ros::Publisher cmd_pub;
+    ros::Publisher cancel_pub;
+    ros::Subscriber cancel_sub;
     ros::Subscriber feedback_sub;
     ros::Subscriber status_sub;
     ros::Subscriber velocity_sub; 
     ros::Subscriber getpath_sub;
     ros::Subscriber resume_sub;
     ros::Subscriber goal_sub;
+
+    float total_vel;
+    int status_flag;
+    int first_time; 
+    uint8_t status_info_;
+    geometry_msgs::Pose current_robot_pose;
+    geometry_msgs::Pose prev_current_robot_pose;
+    geometry_msgs::PoseStamped final_goal;
+    double move_base_GlobalPlanner_plan_Time;
+    float first_global_path_distance;
+    float global_path_percentage;
+    float remaining_time;
+    double msg_global_path_distance;
+    double traveled_distance;
+    float average_total_vel;
+    double remaining_percentage;
+    bool global_path_flag;
 };
 
 int main(int argc, char **argv)
@@ -185,6 +254,7 @@ int main(int argc, char **argv)
 
   while (ros::ok())
   {
+    double cur_time = ros::Time::now().toSec();
     // ros::master::V_TopicInfo master_topics;
     // ros::master::getTopics(master_topics);
 
@@ -192,15 +262,15 @@ int main(int argc, char **argv)
     //   const ros::master::TopicInfo& info = *it;
     //   std::cout << "topic_" << it - master_topics.begin() << ": " << info.name << std::endl;
     // }
-    if ((ros::Time::now().toSec() - Dt.move_base_GlobalPlanner_plan_Time) < 2.0) { Dt.status_flag=1; }
-    else { Dt.status_flag=0; Dt.remaining_time = 0.0; Dt.msg_global_path_distance=0.0; Dt.first_global_path_distance=0.0; Dt.traveled_distance=0.0; Dt.first_time=0; Dt.remaining_percentage=0.0; Dt.global_path_flag=false;}
-    
+    // if ((ros::Time::now().toSec() - Dt.move_base_GlobalPlanner_plan_Time) < 2.0) { Dt.status_flag=1; }
+    // else { Dt.status_flag=0; Dt.remaining_time = 0.0; Dt.msg_global_path_distance=0.0; Dt.first_global_path_distance=0.0; Dt.traveled_distance=0.0; Dt.first_time=0; Dt.remaining_percentage=0.0; Dt.global_path_flag=false;}
+    Dt.check_update_time(cur_time);
 
-    distancetimecalculator_msg.distance_remaining = Dt.msg_global_path_distance;
-    distancetimecalculator_msg.arrival_time = Dt.remaining_time;
-    distancetimecalculator_msg.distance_robot_traveled = Dt.traveled_distance;
-    distancetimecalculator_msg.remaining_distance_percentage = Dt.remaining_percentage;
-    distancetimecalculator_msg.status_info = Dt.status_info_;
+    distancetimecalculator_msg.distance_remaining = Dt.r_msg_global_path_distance();
+    distancetimecalculator_msg.arrival_time = Dt.r_remaining_time();
+    distancetimecalculator_msg.distance_robot_traveled = Dt.r_traveled_distance();
+    distancetimecalculator_msg.remaining_distance_percentage = Dt.r_remaining_percentage();
+    distancetimecalculator_msg.status_info = Dt.r_status_info_();
     
     distancetimecalculator_pub.publish(distancetimecalculator_msg);
     ros::spinOnce();

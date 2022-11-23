@@ -1,6 +1,7 @@
  <launch>
     <arg name="rviz"                            default="false"/>
     <arg name="rtabmapviz"                      default="false"/>
+    <arg name="database_path"                   default="~/.ros/rtabmap.db"/>
     <arg name="local_bundle"                    default="false" />
     <arg name="stereo_"                         default="false"/>
     <arg name="irdepth_"                        default="false"/>
@@ -9,6 +10,8 @@
     <arg name="rtabmap_args"                    default="--delete_db_on_start"/>
     <arg name="localization"                    default="false"/>
     <arg name="use_sim_time_"                   default="false"/>
+    <arg name="grid_cellsize"                   default="0.1"/>
+    <arg name="grid_size"                       default="50"/>
 
     <arg name="strategy"        default="0" />
     <arg name="nn"              default="3" />
@@ -204,6 +207,7 @@
         <arg name="rviz"                                value="$(arg rviz)"/>
         <arg name="localization"                        value="$(arg localization)"/>
         <arg name="publish_tf_odom"                     value="false"/>
+        <arg name="database_path"                       value="$(arg database_path)"/>
         
         <arg name="odom_topic_rtabmap_ros_node"         value="/odometry/filtered"/>
         <arg name="odom_topic_visual_odometry_node"     value="/vo"/>
@@ -234,20 +238,21 @@
 
         
         <!-- Advances arguments -->     
-        <arg name="grid_maxgroundheight"                value="0.1"/>
-        <arg name="grid_maxobstacleheight"              value="0.7"/>
-        <arg name="grid_rangemax"                       value="15"/>
-        <arg name="grid_cellsize"                       value="0.05"/>
+        <arg name="grid_maxgroundheight"                value="0.05"/>
+        <arg name="grid_maxobstacleheight"              value="1.0"/>
+        <arg name="grid_rangemax"                       value="12"/>
+        <arg name="grid_cellsize"                       value="$(arg grid_cellsize)"/>
+        <arg name="grid_size"                           value="$(arg grid_size)"/>
         <arg name="mem_use_odometry_gravity"            value="true"/>
         <arg name="optimizer_gravity_sigma"             value="0.3"/>
         <arg name="grid_from_depth"                     value="false"/>
         <arg name="reg_force_3dof"                      value="$(arg reg_force_3dof)"/>
-        <arg name="reg_strategy"                        value="1"/>  
-        <arg name="rtabmap_detectionrate"               value="1"/>
+        <arg name="reg_strategy"                        value="2"/>  
+        <arg name="rtabmap_detectionrate"               value="2"/>
         <arg name="rgbd_angularupdate"                  value="0.01"/>    <!-- Update map only if the robot is moving -->
         <arg name="rgbd_linearupdate"                   value="0.01"/>    <!-- Update map only if the robot is moving -->
         <arg name="vis_maxdepth"                        value="6"/>
-        <arg name="vis_mininliers"                      value="20"/>
+        <arg name="vis_mininliers"                      value="15"/>
         <arg name="publish_null_when_lost"              value="false"/>
         <!-- <arg name="odom_fillinfodata"                   value="true"/> -->
         <arg if="$(arg multi_rgbd_)" name="vis_featuretype"                     value="6"/>

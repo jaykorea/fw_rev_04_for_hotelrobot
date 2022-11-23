@@ -5,6 +5,7 @@
   <arg name="dt_flag" default="true"/>
   <arg name="joy_flag" default="false"/>
   <arg name="spk_flag" default="true"/>
+  <arg name="smooth_flag" default="true" />
 
   <!-- move_base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
@@ -30,8 +31,8 @@
     <remap from="odom" to="$(arg odom_topic)"/>
   </node>
 
-  <node if="$(arg dt_flag)" pkg="distancetime_calculator" type="distancetime_calculator_node" name="distancetime_calculator_node"  output="screen" respawn="true"/>
-  <node if="$(arg joy_flag)" pkg="freeway_joy" type="freeway_joy_node" name="freeway_joy_node" output="screen" respawn="true"/>
-  <node if="$(arg spk_flag)" pkg="freeway_spk" type="fw_spk.py" name="fw_spk_node" output="screen" respawn="true"/>
-
+  <node if="$(arg dt_flag)" pkg="distancetime_calculator" type="distancetime_calculator_node" name="distancetime_calculator_node"  output="screen" respawn="false"/>
+  <node if="$(arg joy_flag)" pkg="freeway_joy" type="freeway_joy_node" name="freeway_joy_node" output="screen" respawn="false"/>
+  <node if="$(arg spk_flag)" pkg="freeway_spk" type="fw_spk.py" name="fw_spk_node" output="screen" respawn="false"/>
+  <include if="$(arg smooth_flag)" file="$(find yocs_velocity_smoother)/launch/standalone.launch"/>
 </launch>

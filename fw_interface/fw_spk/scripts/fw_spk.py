@@ -49,7 +49,7 @@ def distancetimecalculator_sub(data):
         if data.arrival_time <=10:
             goal_sub_flag = False        
     if data.distance_remaining != 0.0:
-        if rospy.Time.now().to_sec() - ct >= auto_driving_timer_time and dt_f == True:
+        if rospy.Time.now().to_sec() - ct >= auto_driving_timer_time and dt_f == True and data.arrival_time > 7.0:
             playsound(pkg_path+'/scripts/source/auto_driving.mp3')
             ct = rospy.Time.now().to_sec()
         elif data.arrival_time <= 7.0 and dt_count < 1 and goal_sub_flag != False:

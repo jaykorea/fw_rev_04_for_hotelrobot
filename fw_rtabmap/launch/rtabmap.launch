@@ -26,7 +26,8 @@
   <arg name="mem_use_odometry_gravity"            default=""/>
   <arg name="optimizer_gravity_sigma"             default=""/>
   <arg name="grid_from_depth"                     default=""/>
-  <arg name="grid_cellsize"                       default="0.08"/>
+  <arg name="grid_cellsize"                       default="0.1"/>
+  <arg name="grid_size"                           default="50"/>
   <arg name="reg_force_3dof"                      default=""/>
   <arg name="reg_strategy"                        default="0"/>  
   <arg name="rtabmap_detectionrate"               default="2"/>
@@ -442,7 +443,7 @@
       <param name="Optimizer/GravitySigma" type="String"  value="$(arg optimizer_gravity_sigma)"/>
       <param name="Grid/FromDepth"         type="string"  value="$(arg grid_from_depth)"/>
       <param name="Grid/RangeMax"          type="string"  value="$(arg grid_rangemax)"/>
-      <param name="grid_size"              type="double"  value="250"/> <!-- 50 meters wide -->
+      <param name="grid_size"              type="double"  value="$(arg grid_size)"/> <!-- 50 meters wide -->
       <param name="RGBD/CreateOccupancyGrid"  value="true"/>      
       <!-- all points below 50 cm are ground -->
       <param name="Grid/MaxGroundHeight"      type="string" value="$(arg grid_maxgroundheight)"/>       
@@ -567,7 +568,7 @@
 
     <param name="decimation"  type="double" value="4"/>
     <param name="max_depth"   type="double" value="6"/>
-    <param name="roi_ratios"  type="string" value="0.0 0.0 0 0.02"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+    <param name="roi_ratios"  type="string" value="0.0 0.0 0 0.15"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
     <param name="voxel_size"  type="double" value="0.05"/>
     <param name="approx_sync" type="bool"   value="false"/>
   </node>
@@ -583,7 +584,7 @@
  
      <param name="decimation"  type="double" value="4"/>
      <param name="max_depth"   type="double" value="6"/>
-     <param name="roi_ratios"  type="string" value="0.0 0.0 0.0 0.02"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+     <param name="roi_ratios"  type="string" value="0.0 0.0 0.0 0.15"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
      <param name="voxel_size"  type="double" value="0.05"/>
      <param name="approx_sync" type="bool"   value="false"/>
     </node>
@@ -658,8 +659,8 @@
       <arg name="unite_imu_method" value="linear_interpolation"/>
       <arg name="gyro_fps"      value="200"/>
       <arg name="accel_fps"     value="200"/>
-      <arg name="enable_gyro"   value="true"/>
-      <arg name="enable_accel"  value="true"/>
+      <arg name="enable_gyro"   value="false"/>
+      <arg name="enable_accel"  value="false"/>
       <arg name="publish_tf"    value="false"/>
       <arg name="enable_infra"  value="false"/>
       <!-- <arg name="enable_infra1" value="true"/>

@@ -19,8 +19,8 @@
       <arg name="unite_imu_method" value="linear_interpolation"/>
       <arg name="gyro_fps"      value="200"/>
       <arg name="accel_fps"     value="200"/>
-      <arg name="enable_gyro"   value="false"/>
-      <arg name="enable_accel"  value="false"/>
+      <arg name="enable_gyro"   value="true"/>
+      <arg name="enable_accel"  value="true"/>
       <arg name="publish_tf"    value="false"/>
       <arg name="enable_infra"  value="false"/>
       <!-- <arg name="enable_infra1" value="true"/>
@@ -55,11 +55,11 @@
         <param name="use_mag" type="bool" value="false" />
         <param name="publish_tf" type="bool" value="false" />
         <param name="world_frame" type="string" value="enu" />
-        <remap from="/imu/data_raw" to="/d455_L/imu"/>
+        <remap from="/imu/data_raw" to="/d455_R/imu"/>
     </node>
 
         <!-- Odometry fusion (EKF), refer to demo launch file in robot_localization for more info -->
-    <node if="$(arg boolean)" pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+    <node if="$(arg boolean)" pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" required="true" output="screen">
 
       <param name="frequency" value="50"/>
       <param name="sensor_timeout" value="0.1"/>
@@ -104,9 +104,9 @@
       <param name="odom1_differential" value="false"/>
       <param name="imu0_differential" value="false"/>
 
-      <param name="odom0_relative" value="false"/>
+      <param name="odom0_relative" value="true"/>
       <param name="odom1_relative" value="true"/>
-      <param name="imu0_relative" value="false"/>
+      <param name="imu0_relative" value="true"/>
 
       <param name="imu0_remove_gravitational_acceleration" value="$(arg imu_remove_gravitational_acceleration)"/>
 
@@ -114,7 +114,7 @@
 
       <!-- ======== ADVANCED PARAMETERS ======== -->
       <param name="odom0_queue_size" value="5"/>
-      <param name="odom1_queue_size" value="5"/>
+      <param name="odom1_queue_size" value="10"/>
       <param name="imu0_queue_size" value="50"/> 
 
       <!-- The values are ordered as x, y, z, roll, pitch, yaw, vx, vy, vz,

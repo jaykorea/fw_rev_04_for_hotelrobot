@@ -15,9 +15,9 @@
 
   <!-- rviz -->
   <group if="$(arg open_rviz)"> 
-    <node pkg="rviz" type="rviz" name="rviz" required="true"
+    <node pkg="rviz" type="rviz" name="rviz15" required="true"
           args="-d $(find fw_rev_04_slam)/rviz/fw_cartographer.rviz"/>
-    <node pkg="rviz" type="rviz" name="rviz1" required="true"
+    <node pkg="rviz" type="rviz" name="rviz6" required="true"
           args="-d $(find fw_rev_04_slam)/rviz/model.rviz"/>
   </group>
 </launch>
