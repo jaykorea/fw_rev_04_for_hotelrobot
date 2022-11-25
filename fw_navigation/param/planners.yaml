@@ -4,7 +4,7 @@ planners:
 
 planner_patience: 10.0
 GlobalPlanner:
-  allow_unknown: false
+  allow_unknown: true
   default_tolerance: 0.0
   visualize_potential: true
   use_dijkstra: true

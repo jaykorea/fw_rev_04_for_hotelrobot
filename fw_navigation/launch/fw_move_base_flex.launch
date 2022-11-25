@@ -4,7 +4,7 @@
   <arg name="odom_topic" default="/odometry/filtered" />
   <arg name="dt_flag" default="true"/>
   <arg name="joy_flag" default="false"/>
-  <arg name="spk_flag" default="false"/>
+  <arg name="spk_flag" default="true"/>
   <arg name="smooth_flag" default="false" />
   
   <!-- move_base -->

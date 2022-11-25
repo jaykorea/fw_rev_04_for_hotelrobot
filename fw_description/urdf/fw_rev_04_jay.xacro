@@ -22,18 +22,18 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://fw_rev_04_description/meshes/bases/Freeway_Hotel_flatdualcam.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://fw_rev_04_description/meshes/bases/Freeway_Hotel_flatdualcam_low_lidar.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="grey"/>
     </visual>
-
+<!-- 
     <collision>
       <origin xyz="-0.15 0 0.51" rpy="0 0 0"/>
       <geometry>
         <box size="${bodyLength} ${bodyWidth} ${bodyHeight}"/>
       </geometry>
       <material name="red"/>
-    </collision>
+    </collision> -->
 <!--     
     <inertial>
       <origin xyz="0 0 0.1265" rpy="0 0 0"/>
@@ -55,7 +55,7 @@
   <joint name="scan_joint" type="fixed">
     <parent link="base_link"/>
     <child link="base_scan"/>
-    <origin xyz="0.0378 0 0.247" rpy="0 0 ${PI}"/>
+    <origin xyz="0.2215 0 0.011" rpy="0 0 ${PI}"/>
   </joint>
 
   <link name="base_scan">

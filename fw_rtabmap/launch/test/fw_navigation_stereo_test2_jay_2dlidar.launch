@@ -231,7 +231,7 @@
 
 
         <arg name="visual_odometry"                     value="false"/>
-        <arg name="scan_topic"                          value="/scan_rp"/>
+        <arg name="scan_topic"                          value="/scan_rp_filtered"/>
         <arg name="subscribe_scan"                      value="true"/>
         <arg name="subscribe_rgb"                       value="false"/>
         <arg name="subscribe_rgbd"                      value="true"/>

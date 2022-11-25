@@ -3,9 +3,9 @@
 #obstacle_range: 4.5 #default 4.5
 #raytrace_range: 2.0
 
-robot_radius: 0.0
-footprint: [[-0.34, -0.24], [-0.34, 0.24], [0.14, 0.24], [0.14, -0.24]]
-footprint_padding: 0.0
+# robot_radius: 0.0
+footprint: [[-0.34, -0.24], [-0.34, 0.24], [0.26, 0.24], [0.26, -0.24]]
+footprint_padding: 0.005
 
 
 map_topic: /map
@@ -139,10 +139,10 @@ obstacle_3d_layer:
 
 obstacle_2d_layer:
   enabled: true  
-  obstacle_range: 8.0 
+  obstacle_range: 6.0 
   raytrace_range: 10.0 
-  observation_sources: scan_rp
-  scan_rp: {sensor_frame: base_scan, data_type: LaserScan, topic: scan_rp, marking: True, clearing: True, inf_is_valid: True}
+  observation_sources: scan_rp_filtered
+  scan_rp_filtered: {sensor_frame: base_scan, data_type: LaserScan, topic: scan_rp_filtered, marking: True, clearing: True, inf_is_valid: True}
 
 inflation_layer:
   enabled: true
