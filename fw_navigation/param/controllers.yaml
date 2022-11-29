@@ -11,7 +11,7 @@ TebLocalPlannerROS:
   # Trajectory
    
   teb_autosize: True
-  dt_ref: 0.35
+  dt_ref: 0.4
   dt_hysteresis: 0.05 # default: 0.11
   min_samples: 3
   global_plan_overwrite_orientation: true # defualt : true
@@ -25,7 +25,7 @@ TebLocalPlannerROS:
   max_vel_x: 0.7 # default 0.25
   max_vel_y: 0 # default 0.25
   max_vel_x_backwards: 0.25
-  max_vel_theta: 0.95 # default 0.45
+  max_vel_theta: 0.55 # default 0.45
   acc_lim_x: 0.07 # default 0.5
   acc_lim_y: 0
   acc_lim_theta: 0.315 # default : 0.4

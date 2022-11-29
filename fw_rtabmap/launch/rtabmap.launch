@@ -20,8 +20,8 @@
   <arg name="odom_topic_rtabmap_ros_node"         default="$(arg odom_topic)"/>
   <arg name="odom_topic_visual_odometry_node"     default="$(arg odom_topic)"/>
   <arg name="namespace_"                          default=""/>
-  <arg name="grid_maxgroundheight"                default="0.0"/>
-  <arg name="grid_maxobstacleheight"              default="1.0"/>
+  <arg name="grid_maxgroundheight"                default="0.03"/>
+  <arg name="grid_maxobstacleheight"              default="2.0"/>
   <arg name="grid_rangemax"                       default=""/> 
   <arg name="mem_use_odometry_gravity"            default=""/>
   <arg name="optimizer_gravity_sigma"             default=""/>
@@ -49,7 +49,7 @@
   <arg name="use_sim_time_"                       default="false"/>
   <arg name="voxel_clouds_"                       default="true"/>
   <arg name="multi_rgbd_"                         default="false"/>
-  <arg name="multi_rgbd_and_obstacle_detection_"  default="false"/>
+  <arg name="multi_rgbd_and_obstacle_detection_"  default="true"/>
   <arg name="vis_estimationtype"                  default=""/>
   
 
@@ -566,10 +566,10 @@
     <remap from="rgbd_image"        to="/camera_r/rgbd_image"/>
     <remap from="cloud"             to="/voxel_cloud_r" />
 
-    <param name="decimation"  type="double" value="4"/>
+    <param name="decimation"  type="double" value="3"/>
     <param name="max_depth"   type="double" value="6"/>
-    <param name="roi_ratios"  type="string" value="0.0 0.0 0 0.15"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
-    <param name="voxel_size"  type="double" value="0.05"/>
+    <param name="roi_ratios"  type="string" value="0.0 0.0 0 0.0"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+    <param name="voxel_size"  type="double" value="0.04"/>
     <param name="approx_sync" type="bool"   value="false"/>
   </node>
 
@@ -582,10 +582,10 @@
      <remap unless="$(arg subscribe_rgbd)" from="depth/image"       to="$(arg depth_topic_relay)"/>
      <remap unless="$(arg subscribe_rgbd)" from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
  
-     <param name="decimation"  type="double" value="4"/>
+     <param name="decimation"  type="double" value="3"/>
      <param name="max_depth"   type="double" value="6"/>
-     <param name="roi_ratios"  type="string" value="0.0 0.0 0.0 0.15"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
-     <param name="voxel_size"  type="double" value="0.05"/>
+     <param name="roi_ratios"  type="string" value="0.0 0.0 0.0 0.0"/> <!-- Region of interest ratios [left, right, top, bottom] (e.g., "0 0 0 0.2" will cut 20% of the bottom of the image). -->
+     <param name="voxel_size"  type="double" value="0.04"/>
      <param name="approx_sync" type="bool"   value="false"/>
     </node>
 
@@ -595,11 +595,17 @@
      <remap from="obstacles" to="/obstacle_cloud_r"/>
      <remap from="ground"    to="/ground_r"/>
      
-     <param name="min_cluster_size" type="int"  value="20"/>
+     <!-- <param name="min_cluster_size" type="int"  value="20"/> -->
      <param name="frame_id" type="string" value="base_footprint"/>
      <param name="map_frame_id" type="string" value="map"/>
+     <param name="wait_for_transform" type="bool" value="true"/>
+           <!-- all points below 50 cm are ground -->
+      <param name="Grid/MaxGroundHeight"      type="string" value="$(arg grid_maxgroundheight)"/>       
+      <!-- all points above 20 cm and below 2 m are obstacles -->
+      <param name="Grid/MaxObstacleHeight"    type="string" value="$(arg grid_maxobstacleheight)"/>     
+      <param name="Grid/MinClusterSize"       type="int" value="5" />
+      <param name="Grid/NormalsSegmentation" type="string" value="true" />
      <!-- <param name="min_cluster_size" type="int" value="20"/> -->
-     <param name="max_obstacles_height" type="double" value="1.0"/>
     </node>
 
     <!-- <node pkg="nodelet" type="nodelet" name="nodelet_manager6" args="manager"/> -->
@@ -608,11 +614,17 @@
      <remap from="obstacles" to="/obstacle_cloud_l"/>
      <remap from="ground"    to="/ground_l"/>
 
-     <param name="min_cluster_size" type="int"  value="20"/>
+     <!-- <param name="min_cluster_size" type="int"  value="20"/> -->
      <param name="frame_id" type="string" value="base_footprint"/>
      <param name="map_frame_id" type="string" value="map"/>
+     <param name="wait_for_transform" type="bool" value="true"/>
+           <!-- all points below 50 cm are ground -->
+      <param name="Grid/MaxGroundHeight"      type="string" value="$(arg grid_maxgroundheight)"/>       
+      <!-- all points above 20 cm and below 2 m are obstacles -->
+      <param name="Grid/MaxObstacleHeight"    type="string" value="$(arg grid_maxobstacleheight)"/>     
+      <param name="Grid/MinClusterSize"       type="int" value="5" />
+      <param name="Grid/NormalsSegmentation" type="string" value="true" />
      <!-- <param name="min_cluster_size" type="int" value="20"/> -->
-     <param name="max_obstacles_height" type="double" value="1.0"/>
     </node>
 
   </group>
@@ -639,11 +651,16 @@
      <remap from="cloud" to="/voxel_cloud"/>
      <remap from="obstacles" to="/obstacle_cloud"/>
 
-     <param name="min_cluster_size" type="int"  value="40"/>
+     <!-- <param name="min_cluster_size" type="int"  value="20"/> -->
      <param name="frame_id" type="string" value="base_footprint"/>
      <param name="map_frame_id" type="string" value="map"/>
+     <param name="wait_for_transform" type="bool" value="true"/>
+           <!-- all points below 50 cm are ground -->
+      <param name="Grid/MaxGroundHeight"      type="string" value="$(arg grid_maxgroundheight)"/>       
+      <!-- all points above 20 cm and below 2 m are obstacles -->
+      <param name="Grid/MaxObstacleHeight"    type="string" value="$(arg grid_maxobstacleheight)"/>     
+      <param name="Grid/MinClusterSize"       type="int" value="10" />
      <!-- <param name="min_cluster_size" type="int" value="20"/> -->
-     <param name="max_obstacles_height" type="double" value="2.0"/>
   </node>
 
 

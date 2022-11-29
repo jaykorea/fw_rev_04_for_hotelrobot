@@ -37,10 +37,10 @@ oscillation_timeout: 0.0 # how far in meters the robot must move to be considere
 oscillation_distance: 0.2 # how long in seconds to allow for oscillation before executing recovery behaviors
 
 # Other
-recovery_enabled: false # enable the move_base_flex recovery behaviors to attempt to clear out space
-recovery_behavior_enabled: false
+recovery_enabled: true # enable the move_base_flex recovery behaviors to attempt to clear out space
+recovery_behavior_enabled: true
 clearing_rotation_allowed: false
-recovery_patience: 0.0 # how much time we allow recovery behaviors to complete before canceling (or stopping if cancel fails).
+recovery_patience: 15.0 # how much time we allow recovery behaviors to complete before canceling (or stopping if cancel fails).
 restore_defaults: false # restore to the original configuration
 shutdown_costmaps: true # shutdown the costmaps of the node when move_base_flex is in an inactive state.
-shutdown_costmaps_delay: 2.0 # how long in seconds to wait after last action before shutting down the costmaps.
+shutdown_costmaps_delay: 1.0 # how long in seconds to wait after last action before shutting down the costmaps.
