@@ -73,7 +73,8 @@ void resume_cb(const std_msgs::Empty &resume_msg) {
   ros::Duration tenth(0, 100000000); // 0.1 seconds
   for (int i=0; i<1; i++) {
     ROS_INFO("status_info_: %d", status_info_);
-    if(!(status_info_ == 4 || status_info_ == 3)){
+    ROS_INFO("final_goal_position: %f, %f, %f", final_goal.pose.position.x, final_goal.pose.position.y, final_goal.pose.position.z);
+    if((!(status_info_ == 4 || status_info_ == 3)) && (!(final_goal.pose.position.x == 0.0 || final_goal.pose.position.y == 0.0))) {
       resume_pub.publish(final_goal);
     }
     tenth.sleep();

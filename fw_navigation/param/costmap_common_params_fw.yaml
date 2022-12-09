@@ -10,10 +10,10 @@ footprint_padding: 0.005
 
 map_topic: /map
 subscribe_to_updates: true
-global_frame: map
-robot_base_frame: base_footprint
+#global_frame: map
+#robot_base_frame: base_footprint
 always_send_full_costmap: true
-map_type: costmap
+#map_type: costmap
 # inflation_radius: 0.4 #default 0.45
 # cost_scaling_factor: 10.58 #default : 2.0
 
@@ -42,7 +42,9 @@ plugins:
      - {name: static_layer, type: "costmap_2d::StaticLayer"}
      #- {name: obstacle_3d_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}d
      - {name: obstacle_2d_layer, type: "costmap_2d::ObstacleLayer"}
-     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+     - {name: global_inflation_layer, type: "costmap_2d::InflationLayer"}
+     - {name: local_inflation_layer, type: "costmap_2d::InflationLayer"}
+          
 
 static_layer:
   enabled: true
@@ -140,11 +142,17 @@ obstacle_3d_layer:
 obstacle_2d_layer:
   enabled: true  
   observation_sources: scan_rp_filtered obstacle_cloud_l obstacle_cloud_r
-  scan_rp_filtered: {sensor_frame: base_scan, data_type: LaserScan, topic: scan_rp_filtered, obstacle_range: 8.0, raytrace_range: 10.0, marking: True, clearing: True, min_obstacle_height: 0.0, max_obstacle_height: 2.0, inf_is_valid: True}
-  obstacle_cloud_l: {sensor_frame: base_footprint, data_type: PointCloud2, topic: obstacle_cloud_l, obstacle_range: 4.0, raytrace_range: 6.0, marking: True, clearing: True, min_obstacle_height: 0.02, max_obstacle_height: 1.5, inf_is_valid: True}
-  obstacle_cloud_r: {sensor_frame: base_footprint, data_type: PointCloud2, topic: obstacle_cloud_r, obstacle_range: 4.0, raytrace_range: 6.0, marking: True, clearing: True, min_obstacle_height: 0.02, max_obstacle_height: 1.5, inf_is_valid: True}
+  scan_rp_filtered: {sensor_frame: base_scan, data_type: LaserScan, topic: scan_rp_filtered, obstacle_range: 6.0, raytrace_range: 10.0, marking: True, clearing: True, min_obstacle_height: 0.0, max_obstacle_height: 2.0, inf_is_valid: True}
+  obstacle_cloud_l: {sensor_frame: base_footprint, data_type: PointCloud2, topic: obstacle_cloud_l, obstacle_range: 4.0, raytrace_range: 8.0, marking: True, clearing: True, min_obstacle_height: 0.02, max_obstacle_height: 1.5}
+  obstacle_cloud_r: {sensor_frame: base_footprint, data_type: PointCloud2, topic: obstacle_cloud_r, obstacle_range: 4.0, raytrace_range: 8.0, marking: True, clearing: True, min_obstacle_height: 0.02, max_obstacle_height: 1.5}
 
-inflation_layer:
+global_inflation_layer:
   enabled: true
   inflation_radius: 1.25
-  cost_scaling_factor: 5.6
+  cost_scaling_factor: 2.58
+
+local_inflation_layer:
+  enabled: true
+  inflation_radius: 0.6
+  cost_scaling_factor: 3.58
+
